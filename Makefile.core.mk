@@ -98,7 +98,8 @@ gen: \
 	generate-envoy \
 	generate-policy \
 	generate-annotations \
-	generate-openapi-schema
+	generate-openapi-schema \
+	generate-openapi-crd
 
 gen-check: clean gen check-clean-repo
 
@@ -459,13 +460,23 @@ all_openapi := \
 	$(security_v1beta1_openapi) \
 	$(type_v1beta1_openapi)
 
+all_openapi_crd := kubernetes/customresourcedefinition.gen.yaml
+
 $(all_openapi): $(all_protos)
 	@$(cue) -f=$(repo_dir)/cue.yaml
 
+$(all_openapi_crd): $(all_protos)
+	@$(cue) -f=$(repo_dir)/cue.yaml --crd=true
+
 generate-openapi-schema: $(all_openapi)
+
+generate-openapi-crd: $(all_openapi_crd)
 
 clean-openapi-schema:
 	@rm -fr $(all_openapi)
+
+clean-openapi-crd:
+	@rm -fr $(all_openapi_crd)
 
 #####################
 # Cleanup
@@ -484,7 +495,8 @@ clean: \
 	clean-annotations \
 	clean-openapi-schema \
 	clean-security \
-	clean-type
+	clean-type \
+	clean-opeanpi-crd
 
 #####################
 # CI System
