@@ -37,11 +37,11 @@ spec:
               additionalProperties:
                 properties:
                   description:
-                    description: Optional.
+                    description: A human-readable description of the attribute's purpose.
                     format: string
                     type: string
                   valueType:
-                    description: Required.
+                    description: The type of data carried by this attribute.
                     enum:
                     - VALUE_TYPE_UNSPECIFIED
                     - STRING
@@ -61,11 +61,11 @@ spec:
                 for producing at runtime.
               type: object
             name:
-              description: Required.
+              description: Name of the component producing these attributes.
               format: string
               type: string
             revision:
-              description: Optional.
+              description: The revision of this document.
               format: string
               type: string
           type: object
@@ -89,15 +89,15 @@ metadata:
   labels:
     app: istio-pilot
     heritage: Tiller
-    istio: rbac
+    istio: security
     release: istio
-  name: authorizationpolicies.rbac.istio.io
+  name: authorizationpolicies.security.istio.io
 spec:
-  group: rbac.istio.io
+  group: security.istio.io
   names:
     categories:
     - istio-io
-    - rbac-istio-io
+    - security-istio-io
     kind: AuthorizationPolicy
     plural: authorizationpolicies
     singular: authorizationpolicy
@@ -188,11 +188,11 @@ spec:
                     items:
                       properties:
                         key:
-                          description: Required.
+                          description: The name of an Istio attribute.
                           format: string
                           type: string
                         values:
-                          description: Required.
+                          description: The allowed values for the attribute.
                           items:
                             format: string
                             type: string
@@ -213,7 +213,7 @@ spec:
           type: object
       type: object
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     served: true
     storage: true
 status:
@@ -369,7 +369,7 @@ spec:
                 type: string
               type: array
             host:
-              description: REQUIRED.
+              description: The name of a service from the service registry.
               format: string
               type: string
             subsets:
@@ -381,7 +381,7 @@ spec:
                       type: string
                     type: object
                   name:
-                    description: REQUIRED.
+                    description: Name of the subset.
                     format: string
                     type: string
                   trafficPolicy:
@@ -472,7 +472,7 @@ spec:
                                 description: Hash based on HTTP cookie.
                                 properties:
                                   name:
-                                    description: REQUIRED.
+                                    description: Name of the cookie.
                                     format: string
                                     type: string
                                   path:
@@ -480,7 +480,7 @@ spec:
                                     format: string
                                     type: string
                                   ttl:
-                                    description: REQUIRED.
+                                    description: Lifetime of the cookie.
                                     type: string
                                 type: object
                               httpHeaderName:
@@ -610,7 +610,7 @@ spec:
                                       description: Hash based on HTTP cookie.
                                       properties:
                                         name:
-                                          description: REQUIRED.
+                                          description: Name of the cookie.
                                           format: string
                                           type: string
                                         path:
@@ -618,7 +618,7 @@ spec:
                                           format: string
                                           type: string
                                         ttl:
-                                          description: REQUIRED.
+                                          description: Lifetime of the cookie.
                                           type: string
                                       type: object
                                     httpHeaderName:
@@ -819,7 +819,7 @@ spec:
                           description: Hash based on HTTP cookie.
                           properties:
                             name:
-                              description: REQUIRED.
+                              description: Name of the cookie.
                               format: string
                               type: string
                             path:
@@ -827,7 +827,7 @@ spec:
                               format: string
                               type: string
                             ttl:
-                              description: REQUIRED.
+                              description: Lifetime of the cookie.
                               type: string
                           type: object
                         httpHeaderName:
@@ -955,7 +955,7 @@ spec:
                                 description: Hash based on HTTP cookie.
                                 properties:
                                   name:
-                                    description: REQUIRED.
+                                    description: Name of the cookie.
                                     format: string
                                     type: string
                                   path:
@@ -963,7 +963,7 @@ spec:
                                     format: string
                                     type: string
                                   ttl:
-                                    description: REQUIRED.
+                                    description: Lifetime of the cookie.
                                     type: string
                                 type: object
                               httpHeaderName:
@@ -1122,7 +1122,7 @@ spec:
             details at: https://istio.io/docs/reference/config/networking/v1alpha3/envoy-filter.html'
           properties:
             configPatches:
-              description: REQUIRED.
+              description: One or more patches with match conditions.
               items:
                 properties:
                   applyTo:
@@ -1305,11 +1305,11 @@ spec:
                   filterConfig:
                     type: object
                   filterName:
-                    description: 'REQUIRED: The name of the filter to instantiate.'
+                    description: The name of the filter to instantiate.
                     format: string
                     type: string
                   filterType:
-                    description: 'REQUIRED: The type of filter to instantiate.'
+                    description: The type of filter to instantiate.
                     enum:
                     - INVALID
                     - HTTP
@@ -1430,7 +1430,7 @@ spec:
                 type: string
               type: object
             servers:
-              description: 'REQUIRED: A list of server specifications.'
+              description: A list of server specifications.
               items:
                 properties:
                   bind:
@@ -1440,7 +1440,7 @@ spec:
                     format: string
                     type: string
                   hosts:
-                    description: REQUIRED.
+                    description: One or more hosts exposed by this gateway.
                     items:
                       format: string
                       type: string
@@ -1452,11 +1452,10 @@ spec:
                         format: string
                         type: string
                       number:
-                        description: 'REQUIRED: A valid non-negative integer port
-                          number.'
+                        description: A valid non-negative integer port number.
                         type: integer
                       protocol:
-                        description: 'REQUIRED: The protocol exposed on the port.'
+                        description: The protocol exposed on the port.
                         format: string
                         type: string
                     type: object
@@ -1575,12 +1574,24 @@ spec:
       properties:
         spec:
           properties:
-            apiSpecs:
-              description: REQUIRED.
+            api_specs:
               items:
                 properties:
                   name:
-                    description: REQUIRED.
+                    description: The short name of the HTTPAPISpec.
+                    format: string
+                    type: string
+                  namespace:
+                    description: Optional namespace of the HTTPAPISpec.
+                    format: string
+                    type: string
+                type: object
+              type: array
+            apiSpecs:
+              items:
+                properties:
+                  name:
+                    description: The short name of the HTTPAPISpec.
                     format: string
                     type: string
                   namespace:
@@ -1590,7 +1601,7 @@ spec:
                 type: object
               type: array
             services:
-              description: REQUIRED.
+              description: One or more services to map the listed HTTPAPISpec onto.
               items:
                 properties:
                   domain:
@@ -1662,6 +1673,29 @@ spec:
       properties:
         spec:
           properties:
+            api_keys:
+              items:
+                oneOf:
+                - required:
+                  - query
+                - required:
+                  - header
+                - required:
+                  - cookie
+                properties:
+                  cookie:
+                    format: string
+                    type: string
+                  header:
+                    description: API key is sent in a request header.
+                    format: string
+                    type: string
+                  query:
+                    description: API Key is sent as a query parameter.
+                    format: string
+                    type: string
+                type: object
+              type: array
             apiKeys:
               items:
                 oneOf:
@@ -1883,9 +1917,18 @@ spec:
                           of the JWT.
                         format: string
                         type: string
+                      jwks_uri:
+                        format: string
+                        type: string
                       jwksUri:
                         format: string
                         type: string
+                      jwt_headers:
+                        description: JWT is sent in a request header.
+                        items:
+                          format: string
+                          type: string
+                        type: array
                       jwtHeaders:
                         description: JWT is sent in a request header.
                         items:
@@ -1898,11 +1941,208 @@ spec:
                           format: string
                           type: string
                         type: array
+                      trigger_rules:
+                        items:
+                          properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            excludedPaths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            includedPaths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        type: array
                       triggerRules:
                         items:
                           properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
                             excludedPaths:
                               description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
                               items:
                                 oneOf:
                                 - required:
@@ -1998,9 +2238,18 @@ spec:
                           of the JWT.
                         format: string
                         type: string
+                      jwks_uri:
+                        format: string
+                        type: string
                       jwksUri:
                         format: string
                         type: string
+                      jwt_headers:
+                        description: JWT is sent in a request header.
+                        items:
+                          format: string
+                          type: string
+                        type: array
                       jwtHeaders:
                         description: JWT is sent in a request header.
                         items:
@@ -2013,11 +2262,208 @@ spec:
                           format: string
                           type: string
                         type: array
+                      trigger_rules:
+                        items:
+                          properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            excludedPaths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            includedPaths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        type: array
                       triggerRules:
                         items:
                           properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
                             excludedPaths:
                               description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
                               items:
                                 oneOf:
                                 - required:
@@ -2117,7 +2563,7 @@ spec:
                       type: string
                     type: object
                   name:
-                    description: REQUIRED.
+                    description: The name must be a short name from the service registry.
                     format: string
                     type: string
                   ports:
@@ -2207,9 +2653,18 @@ spec:
                           of the JWT.
                         format: string
                         type: string
+                      jwks_uri:
+                        format: string
+                        type: string
                       jwksUri:
                         format: string
                         type: string
+                      jwt_headers:
+                        description: JWT is sent in a request header.
+                        items:
+                          format: string
+                          type: string
+                        type: array
                       jwtHeaders:
                         description: JWT is sent in a request header.
                         items:
@@ -2222,11 +2677,208 @@ spec:
                           format: string
                           type: string
                         type: array
+                      trigger_rules:
+                        items:
+                          properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            excludedPaths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            includedPaths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        type: array
                       triggerRules:
                         items:
                           properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
                             excludedPaths:
                               description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
                               items:
                                 oneOf:
                                 - required:
@@ -2322,9 +2974,18 @@ spec:
                           of the JWT.
                         format: string
                         type: string
+                      jwks_uri:
+                        format: string
+                        type: string
                       jwksUri:
                         format: string
                         type: string
+                      jwt_headers:
+                        description: JWT is sent in a request header.
+                        items:
+                          format: string
+                          type: string
+                        type: array
                       jwtHeaders:
                         description: JWT is sent in a request header.
                         items:
@@ -2337,11 +2998,208 @@ spec:
                           format: string
                           type: string
                         type: array
+                      trigger_rules:
+                        items:
+                          properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            excludedPaths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            includedPaths:
+                              description: List of paths that the request must include.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        type: array
                       triggerRules:
                         items:
                           properties:
+                            excluded_paths:
+                              description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
                             excludedPaths:
                               description: List of paths to be excluded from the request.
+                              items:
+                                oneOf:
+                                - required:
+                                  - exact
+                                - required:
+                                  - prefix
+                                - required:
+                                  - suffix
+                                - required:
+                                  - regex
+                                properties:
+                                  exact:
+                                    description: exact string match.
+                                    format: string
+                                    type: string
+                                  prefix:
+                                    description: prefix-based match.
+                                    format: string
+                                    type: string
+                                  regex:
+                                    description: ECMAscript style regex-based match
+                                      as defined by [EDCA-262](http://en.cppreference.com/w/cpp/regex/ecmascript).
+                                    format: string
+                                    type: string
+                                  suffix:
+                                    description: suffix-based match.
+                                    format: string
+                                    type: string
+                                type: object
+                              type: array
+                            included_paths:
+                              description: List of paths that the request must include.
                               items:
                                 oneOf:
                                 - required:
@@ -2441,7 +3299,7 @@ spec:
                       type: string
                     type: object
                   name:
-                    description: REQUIRED.
+                    description: The name must be a short name from the service registry.
                     format: string
                     type: string
                   ports:
@@ -2506,11 +3364,10 @@ spec:
         spec:
           properties:
             quotaSpecs:
-              description: REQUIRED.
               items:
                 properties:
                   name:
-                    description: REQUIRED.
+                    description: The short name of the QuotaSpec.
                     format: string
                     type: string
                   namespace:
@@ -2520,7 +3377,7 @@ spec:
                 type: object
               type: array
             services:
-              description: REQUIRED.
+              description: One or more services to map the listed QuotaSpec onto.
               items:
                 properties:
                   domain:
@@ -2781,46 +3638,45 @@ spec:
             telemetry features. See more details at: https://istio.io/docs/reference/config/policy-and-telemetry/istio.policy.v1beta1.html'
           properties:
             actions:
-              description: Optional.
+              description: The actions that will be executed when match evaluates
+                to `true`.
               items:
                 properties:
                   handler:
-                    description: Required.
+                    description: Fully qualified name of the handler to invoke.
                     format: string
                     type: string
                   instances:
-                    description: Required.
                     items:
                       format: string
                       type: string
                     type: array
                   name:
-                    description: Optional.
+                    description: A handle to refer to the results of the action.
                     format: string
                     type: string
                 type: object
               type: array
             match:
-              description: Required.
+              description: Match is an attribute based predicate.
               format: string
               type: string
             requestHeaderOperations:
-              description: Optional.
               items:
                 properties:
                   name:
-                    description: Required.
+                    description: Header name literal value.
                     format: string
                     type: string
                   operation:
-                    description: Optional.
+                    description: Header operation type.
                     enum:
                     - REPLACE
                     - REMOVE
                     - APPEND
                     type: string
                   values:
-                    description: Optional.
+                    description: Header value expressions.
                     items:
                       format: string
                       type: string
@@ -2828,22 +3684,21 @@ spec:
                 type: object
               type: array
             responseHeaderOperations:
-              description: Optional.
               items:
                 properties:
                   name:
-                    description: Required.
+                    description: Header name literal value.
                     format: string
                     type: string
                   operation:
-                    description: Optional.
+                    description: Header operation type.
                     enum:
                     - REPLACE
                     - REMOVE
                     - APPEND
                     type: string
                   values:
-                    description: Optional.
+                    description: Header value expressions.
                     items:
                       format: string
                       type: string
@@ -2853,7 +3708,8 @@ spec:
             sampling:
               properties:
                 random:
-                  description: Optional.
+                  description: Provides filtering of actions based on random selection
+                    per request.
                   properties:
                     attributeExpression:
                       description: Specifies an attribute expression to use to override
@@ -2879,7 +3735,6 @@ spec:
                       type: boolean
                   type: object
                 rateLimit:
-                  description: Optional.
                   properties:
                     maxUnsampledEntries:
                       description: Number of entries to allow during the `sampling_duration`
@@ -3007,7 +3862,7 @@ spec:
                 type: string
               type: array
             hosts:
-              description: REQUIRED.
+              description: The hosts associated with the ServiceEntry.
               items:
                 format: string
                 type: string
@@ -3018,7 +3873,7 @@ spec:
               - MESH_INTERNAL
               type: string
             ports:
-              description: REQUIRED.
+              description: The ports associated with the external service.
               items:
                 properties:
                   name:
@@ -3026,16 +3881,16 @@ spec:
                     format: string
                     type: string
                   number:
-                    description: 'REQUIRED: A valid non-negative integer port number.'
+                    description: A valid non-negative integer port number.
                     type: integer
                   protocol:
-                    description: 'REQUIRED: The protocol exposed on the port.'
+                    description: The protocol exposed on the port.
                     format: string
                     type: string
                 type: object
               type: array
             resolution:
-              description: 'REQUIRED: Service discovery mode for the hosts.'
+              description: Service discovery mode for the hosts.
               enum:
               - NONE
               - STATIC
@@ -3166,7 +4021,7 @@ spec:
                       type: integer
                     type: array
                   services:
-                    description: Required.
+                    description: A list of service names.
                     items:
                       format: string
                       type: string
@@ -3182,19 +4037,19 @@ spec:
               format: string
               type: string
             roleRef:
-              description: Required.
+              description: Reference to the ServiceRole object.
               properties:
                 kind:
-                  description: Required.
+                  description: The type of the role being referenced.
                   format: string
                   type: string
                 name:
-                  description: Required.
+                  description: The name of the ServiceRole object being referenced.
                   format: string
                   type: string
               type: object
             subjects:
-              description: Required.
+              description: List of subjects that are assigned the ServiceRole object.
               items:
                 properties:
                   group:
@@ -3300,7 +4155,7 @@ spec:
             at: https://istio.io/docs/reference/config/authorization/istio.rbac.v1alpha1.html'
           properties:
             rules:
-              description: Required.
+              description: The set of access rules (permissions) that the role has.
               items:
                 properties:
                   constraints:
@@ -3362,7 +4217,7 @@ spec:
                       type: integer
                     type: array
                   services:
-                    description: Required.
+                    description: A list of service names.
                     items:
                       format: string
                       type: string
@@ -3415,7 +4270,6 @@ spec:
             See more details at: https://istio.io/docs/reference/config/networking/v1alpha3/sidecar.html'
           properties:
             egress:
-              description: REQUIRED.
               items:
                 properties:
                   bind:
@@ -3440,11 +4294,10 @@ spec:
                         format: string
                         type: string
                       number:
-                        description: 'REQUIRED: A valid non-negative integer port
-                          number.'
+                        description: A valid non-negative integer port number.
                         type: integer
                       protocol:
-                        description: 'REQUIRED: The protocol exposed on the port.'
+                        description: The protocol exposed on the port.
                         format: string
                         type: string
                     type: object
@@ -3467,18 +4320,17 @@ spec:
                     format: string
                     type: string
                   port:
-                    description: REQUIRED.
+                    description: The port associated with the listener.
                     properties:
                       name:
                         description: Label assigned to the port.
                         format: string
                         type: string
                       number:
-                        description: 'REQUIRED: A valid non-negative integer port
-                          number.'
+                        description: A valid non-negative integer port number.
                         type: integer
                       protocol:
-                        description: 'REQUIRED: The protocol exposed on the port.'
+                        description: The protocol exposed on the port.
                         format: string
                         type: string
                     type: object
@@ -3578,7 +4430,7 @@ spec:
                 type: string
               type: array
             hosts:
-              description: REQUIRED.
+              description: The destination hosts to which traffic is being sent.
               items:
                 format: string
                 type: string
@@ -3660,7 +4512,8 @@ spec:
                             format: string
                             type: string
                           httpStatus:
-                            description: REQUIRED.
+                            description: HTTP status code to use to abort the Http
+                              request.
                             format: int32
                             type: integer
                           percent:
@@ -3691,7 +4544,7 @@ spec:
                           exponentialDelay:
                             type: string
                           fixedDelay:
-                            description: REQUIRED.
+                            description: Add a fixed delay before forwarding the request.
                             type: string
                           percent:
                             description: Percentage of requests on which the delay
@@ -3896,7 +4749,7 @@ spec:
                   mirror:
                     properties:
                       host:
-                        description: REQUIRED.
+                        description: The name of a service from the service registry.
                         format: string
                         type: string
                       port:
@@ -3911,6 +4764,11 @@ spec:
                         format: string
                         type: string
                     type: object
+                  mirror_percent:
+                    description: Percentage of the traffic to be mirrored by the `mirror`
+                      field.
+                    nullable: true
+                    type: integer
                   mirrorPercent:
                     description: Percentage of the traffic to be mirrored by the `mirror`
                       field.
@@ -3947,7 +4805,7 @@ spec:
                     description: Retry policy for HTTP requests.
                     properties:
                       attempts:
-                        description: REQUIRED.
+                        description: Number of retries for a given request.
                         format: int32
                         type: integer
                       perTryTimeout:
@@ -3988,10 +4846,10 @@ spec:
                           description: Use of `append_response_headers` is deprecated.
                           type: object
                         destination:
-                          description: REQUIRED.
                           properties:
                             host:
-                              description: REQUIRED.
+                              description: The name of a service from the service
+                                registry.
                               format: string
                               type: string
                             port:
@@ -4058,7 +4916,6 @@ spec:
                             type: string
                           type: array
                         weight:
-                          description: REQUIRED.
                           format: int32
                           type: integer
                       type: object
@@ -4114,10 +4971,10 @@ spec:
                     items:
                       properties:
                         destination:
-                          description: REQUIRED.
                           properties:
                             host:
-                              description: REQUIRED.
+                              description: The name of a service from the service
+                                registry.
                               format: string
                               type: string
                             port:
@@ -4133,7 +4990,6 @@ spec:
                               type: string
                           type: object
                         weight:
-                          description: REQUIRED.
                           format: int32
                           type: integer
                       type: object
@@ -4144,7 +5000,6 @@ spec:
               items:
                 properties:
                   match:
-                    description: REQUIRED.
                     items:
                       properties:
                         destinationSubnets:
@@ -4166,7 +5021,7 @@ spec:
                             addressed.
                           type: integer
                         sniHosts:
-                          description: REQUIRED.
+                          description: SNI (server name indicator) to match on.
                           items:
                             format: string
                             type: string
@@ -4189,10 +5044,10 @@ spec:
                     items:
                       properties:
                         destination:
-                          description: REQUIRED.
                           properties:
                             host:
-                              description: REQUIRED.
+                              description: The name of a service from the service
+                                registry.
                               format: string
                               type: string
                             port:
@@ -4208,7 +5063,6 @@ spec:
                               type: string
                           type: object
                         weight:
-                          description: REQUIRED.
                           format: int32
                           type: integer
                       type: object
