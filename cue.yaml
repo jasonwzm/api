@@ -634,6 +634,8 @@ crd:
           istio: security
           heritage: Tiller
           release: istio
+        annotations:
+          "helm.sh/resource-policy": keep
       spec:
         group: security.istio.io
         names:
